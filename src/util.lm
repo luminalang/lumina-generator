@@ -1,0 +1,4 @@
+pub fn joinWith sep strings as string, [string] -> string =
+  match strings . map #show
+  | [] -> ""
+  | [x : xs] -> xs . fold #(\s elem -> s <++> sep <++> elem) x

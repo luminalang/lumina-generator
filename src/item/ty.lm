@@ -1,0 +1,16 @@
+use project:entity [Entity]
+
+pub type Header {
+  name string
+  params [Entity]
+}
+
+pub type Kind = Struct | Trait | Sum
+
+impl ToString for Header
+  fn show h as self -> string =
+    ""
+
+impl ToString for Kind
+  fn show k as self -> string =
+    ""

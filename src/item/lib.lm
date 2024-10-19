@@ -1,0 +1,12 @@
+use attr [Attributes]
+
+pub type Item
+  = Function Attributes func:Function
+  | Type Attributes ty:Header ty:Kind
+
+impl ToString for Item
+  fn show item as Item -> string =
+    match item
+    | Item:Function attr func -> show attr <++> show func
+    | Item:Type attr header body -> show attr <++> show header <++> " " <++> show body
+

@@ -1,0 +1,16 @@
+use util [joinWith]
+use std:list [map]
+
+pub type Call header param {
+  header header
+  params [param]
+
+  separator string
+}
+
+when
+  h can ToString
+  p can ToString
+impl ToString for Call h p
+  fn show {header, params, separator} as self -> string =
+    show header <++> " " <++> (map #show params . joinWith separator)

@@ -1,0 +1,12 @@
+use project:util [joinWith]
+
+pub type Attributes {
+  inner [string]
+}
+
+impl ToString for Attributes
+  fn show {inner} as self -> string = 
+    if inner . len == 0 then
+      ""
+    else
+      "@[" <++> joinWith ", " inner <++> "]\n"

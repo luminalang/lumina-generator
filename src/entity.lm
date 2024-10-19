@@ -1,0 +1,33 @@
+use project:call [Call]
+use util [joinWith]
+
+pub type Entity 
+  = Call (Call string self)
+  | List [self]
+  | Record Entity string [(Maybe string, Entity)]
+  | Tuple [self]
+  | String string
+  | Just string
+  // | Operator self string self
+
+impl ToString for Entity
+  fn show entity as self -> string =
+    match entity
+    | Call call -> show call
+    | Just name -> name
+    | List elems ->
+      "[" <++> joinWith ", " (elems . map #show) <++> "]"
+    | Record header sep fields -> 
+      "{" <++> show header <++> " " <++> sep <++> " " <++> joinWith ", " (fields . map #fmt_field) <++> "}"
+    | Tuple elems -> 
+      "(" <++> joinWith ", " (elems . map #show) <++> ")"
+    | String str -> 
+      "\"" <++> str <++> "\""
+   where
+    fn fmt_field (fname, entity) as (Maybe string, Entity) -> string =
+      match fname
+      | Maybe:Just fname -> fname <++> " = " <++> show entity
+      | Nothing    -> show entity
+
+pub fn call header params as string, [Entity] -> Entity =
+  Call { Call string Entity | header, params, separator = " " }

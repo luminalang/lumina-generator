@@ -1,0 +1,6 @@
+fn main =
+  item:func:named "test"
+  . param (Just "x", Just "int")
+  . param (Just "y", Just "int")
+  . returning (Entity:Tuple [Just "int", Just "int"])
+  . io:println

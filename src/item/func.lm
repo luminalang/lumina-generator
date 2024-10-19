@@ -1,0 +1,40 @@
+use std:list [map]
+use project:entity [Entity [Just]]
+use project:util [joinWith]
+
+pub type Function {
+  name string
+  patterns [Entity]
+  ptypes [Entity]
+  ret Entity
+  body Maybe FuncBody
+}
+
+pub type FuncBody {
+  // TODO: where-bindings
+  expr Entity
+}
+
+pub fn named name as string -> Function =
+  { name, patterns = [], ptypes = [], ret = Just "()", body = Nothing }
+
+pub fn param (pat, ty) func as (Entity, Entity), Function -> Function =
+  { func ~ patterns @ xs = xs ++ [pat], ptypes @ txs = txs ++ [ty] }
+  
+pub fn returning ret func as Entity, Function -> Function =
+  { func ~ ret }
+
+impl ToString for Function
+  fn show {name, patterns, ptypes, ret, body} as self -> string =
+    "fn" <++> " " <++> name <++> " " <++> joinWith " " (map #show patterns) <++> " " <++>
+    "as" <++> " " <++> joinWith ", " (map #show ptypes) <++> " -> " <++> show ret
+    . optional_body
+   where
+    fn optional_body header as string -> string = 
+      match body
+      | Maybe:Just body -> header <++> " = " <++> show body // TODO: indent?
+      | Nothing   -> header
+
+impl ToString for FuncBody
+  fn show {expr} as self -> string = show expr
+
